@@ -108,6 +108,7 @@ Base.show(io::IO, q::RelativeQuantity{T, SystemBaseUnit}) where {T} =
     print(io, q.value, " SU")
 Base.show(io::IO, ::DeviceBaseUnit) = print(io, "DU")
 Base.show(io::IO, ::SystemBaseUnit) = print(io, "SU")
+Base.show(io::IO, ::NaturalUnit) = print(io, "NU")
 
 # Zero/one for numeric operations
 Base.zero(::Type{RelativeQuantity{T, U}}) where {T, U} = RelativeQuantity(zero(T), U())
