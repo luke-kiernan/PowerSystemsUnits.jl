@@ -25,8 +25,15 @@ System base per-unit. Values are normalized to the system's base power.
 """
 struct SystemBaseUnit <: AbstractRelativeUnit end
 
+"""
+Natural units. When used as a target, returns the value with the appropriate
+Unitful unit for the category (MW for power, Ω for impedance, etc.).
+"""
+struct NaturalUnit end
+
 const DU = DeviceBaseUnit()
 const SU = SystemBaseUnit()
+const NU = NaturalUnit()
 
 """
     RelativeQuantity{T<:Number, U<:AbstractRelativeUnit} <: Number

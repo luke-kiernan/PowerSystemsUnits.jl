@@ -180,6 +180,22 @@ PowerSystemsUnits.get_base_voltage(::MockLine) = 230.0
         @test result ≈ z  # ratio is 1.0 since device == system base
     end
 
+    @testset "NU (natural units)" begin
+        gen = MockGen(0.6, 50.0)
+
+        # NU returns the value with the category's natural unit attached
+        result = convert_units(gen, 0.6, POWER, DU, NU)
+        @test result isa Unitful.Quantity
+        @test Unitful.ustrip(result) ≈ 30.0
+
+        result = convert_units(gen, 0.01, IMPEDANCE, DU, NU)
+        @test Unitful.dimension(Unitful.unit(result)) == Unitful.dimension(u"Ω")
+
+        # NU as source
+        result = convert_units(gen, 30.0MW, POWER, NU, DU)
+        @test ustrip(result) ≈ 0.6
+    end
+
     @testset "Custom Unitful units" begin
         @test 1.0Mvar == 1.0u"MW"  # same dimension
         @test 1.0MVA == 1.0u"MW"

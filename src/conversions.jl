@@ -172,5 +172,22 @@ function convert_units(c, val::Quantity, cat::UnitCategory, ::Units, ::SystemBas
     return RelativeQuantity(natural_val / system_base_value(c, cat), SU)
 end
 
+# --- To NU (natural units) — delegate to the category's natural unit ---
+
+function convert_units(c, value::Number, cat::UnitCategory, from, ::NaturalUnit)
+    return convert_units(c, value, cat, from, natural_unit(cat))
+end
+
+# --- From NU — delegate from the category's natural unit ---
+
+function convert_units(c, val::Quantity, cat::UnitCategory, ::NaturalUnit, to)
+    return convert_units(c, val, cat, natural_unit(cat), to)
+end
+
+# NU → NU (identity, attach the natural unit)
+function convert_units(c, val::Quantity, cat::UnitCategory, ::NaturalUnit, ::NaturalUnit)
+    return uconvert(natural_unit(cat), val)
+end
+
 # --- nothing passthrough ---
 convert_units(::Any, ::Nothing, ::UnitCategory, ::Any, ::Any) = nothing

@@ -12,8 +12,8 @@ function __init__()
 end
 
 # Types
-export AbstractRelativeUnit, DeviceBaseUnit, SystemBaseUnit
-export RelativeQuantity, DU, SU
+export AbstractRelativeUnit, DeviceBaseUnit, SystemBaseUnit, NaturalUnit
+export RelativeQuantity, DU, SU, NU
 
 # Unitful re-exports
 export MW, Mvar, MVA, kV, OHMS, SIEMENS
