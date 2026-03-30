@@ -138,19 +138,11 @@ convert_units(::Any, value::Number, ::UnitCategory, ::DeviceBaseUnit, ::DeviceBa
     value * DU
 
 function convert_units(c, value::Float64, cat::UnitCategory, ::DeviceBaseUnit, ::Type{Float64})::Float64
-    try
-        return value * _du_to_su_ratio(c, cat)
-    catch
-        return value
-    end
+    return value * _du_to_su_ratio(c, cat)
 end
 
 function convert_units(c, value::ComplexF64, cat::UnitCategory, ::DeviceBaseUnit, ::Type{Float64})::ComplexF64
-    try
-        return value * _du_to_su_ratio(c, cat)
-    catch
-        return value
-    end
+    return value * _du_to_su_ratio(c, cat)
 end
 
 # --- From SU ---
