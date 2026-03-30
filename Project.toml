@@ -1,0 +1,10 @@
+name = "PowerSystemsUnits"
+uuid = "68e3e300-ad78-400a-9448-9f67be5a6d39"
+version = "0.1.0"
+authors = ["Luke Kiernan <lkiernan@nrel.gov>"]
+
+[deps]
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+[compat]
+Unitful = "1.28.0"
