@@ -6,6 +6,7 @@ import Unitful
 
 include("types.jl")
 include("conversions.jl")
+include("serialization.jl")
 
 function __init__()
     Unitful.register(PowerSystemsUnits)
@@ -30,5 +31,9 @@ export get_device_base_power, get_system_base_power, get_base_voltage
 # Conversion functions
 export natural_unit, base_value, system_base_value
 export convert_units, DEFAULT_UNITS
+
+# Serialization
+export serialize_quantity, deserialize_quantity
+export unit_to_string, string_to_unit
 
 end # module PowerSystemsUnits

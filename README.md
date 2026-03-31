@@ -10,18 +10,19 @@ Provides per-unit types (`DU`, `SU`), unit categories (`POWER`, `IMPEDANCE`, etc
 using PowerSystemsUnits
 
 # Downstream packages implement the interface for their component types:
+# no units attached, but should be in MW for power, kV for voltage.
 PowerSystemsUnits.get_device_base_power(g::MyGen) = g.base_power
 PowerSystemsUnits.get_system_base_power(g::MyGen) = 100.0
 PowerSystemsUnits.get_base_voltage(g::MyGen) = 230.0
 
 # Convert between unit systems
-convert_units(gen, 0.6, POWER, DU, MW)       # 30.0 MW
-convert_units(gen, 0.6, POWER, DU, SU)       # 0.3 SU
-convert_units(gen, 0.6, POWER, DU, NU)       # 30.0 MW (natural units)
-convert_units(gen, 0.6, POWER, DU, Float64)  # 0.3 (raw SU, no wrapper)
-
-# Round-trip
+gen = MyGen(base_power = 50.0) # 50.0 MW device base
+convert_units(gen, 0.6, POWER, DU, MW)       # 30.0 MW (60% of 50 MW)
+convert_units(gen, 0.6, POWER, DU, SU)       # 0.3 SU (30 MW / 100 MW)
 convert_units(gen, 30.0MW, POWER, NU, DU)    # 0.6 DU
+# aliases for convenience:
+convert_units(gen, 0.6, POWER, DU, NU)       # 30.0 MW (natural units)
+convert_units(gen, 0.6, POWER, DU, Float64)  # 0.3 (raw SU, no units)
 
 # Per-unit arithmetic with type safety
 0.6DU + 0.4DU   # 1.0 DU

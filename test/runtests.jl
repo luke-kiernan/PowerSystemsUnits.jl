@@ -196,6 +196,55 @@ PowerSystemsUnits.get_base_voltage(::MockLine) = 230.0
         @test ustrip(result) ≈ 0.6
     end
 
+    @testset "Serialization: RelativeQuantity" begin
+        # Real DU
+        q = 0.6DU
+        d = serialize_quantity(q)
+        @test d["value"] == 0.6
+        @test d["units"] == "DU"
+        @test deserialize_quantity(d) == q
+
+        # Real SU
+        q = 0.3SU
+        d = serialize_quantity(q)
+        @test d["value"] == 0.3
+        @test d["units"] == "SU"
+        @test deserialize_quantity(d) == q
+
+        # Complex SU
+        q = (0.01 + 0.1im) * SU
+        d = serialize_quantity(q)
+        @test d["value"]["re"] == 0.01
+        @test d["value"]["im"] == 0.1
+        @test d["units"] == "SU"
+        @test deserialize_quantity(d) == q
+    end
+
+    @testset "Serialization: Unitful Quantity" begin
+        q = 30.0MW
+        d = serialize_quantity(q)
+        @test d["value"] == 30.0
+        @test d["units"] == "MW"
+        @test deserialize_quantity(d) ≈ q
+
+        q = 529.0OHMS
+        d = serialize_quantity(q)
+        @test d["value"] == 529.0
+        @test d["units"] == "Ω"
+        @test deserialize_quantity(d) ≈ q
+    end
+
+    @testset "Serialization: JSON string round-trip" begin
+        import JSON3
+        q = 0.3SU
+        json = JSON3.write(serialize_quantity(q))
+        @test deserialize_quantity(json) == q
+
+        q = 30.0MW
+        json = JSON3.write(serialize_quantity(q))
+        @test deserialize_quantity(json) ≈ q
+    end
+
     @testset "Custom Unitful units" begin
         @test 1.0Mvar == 1.0u"MW"  # same dimension
         @test 1.0MVA == 1.0u"MW"
